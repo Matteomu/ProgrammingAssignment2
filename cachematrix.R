@@ -4,12 +4,35 @@
 ## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    bat <- NULL
+    lam <- function(y) {
+        x <<- y
+        bat <<- NULL
+    }
+    bar <- function() x
+    laminverse <- function(inverse) bat <<- inverse
+    barinverse <- function() bat
+    list(lam=lam, bar=bar, laminverse=laminverse, barinverse=barinverse)
 }
 
 
-## Write a short comment describing this function
+
+
+# The function gives the inverse of the matrix. It first checks if
+# the inverse has already been calculated. If so, it gets the result and skips the
+# computation. If not, it calculates the inverse, sets the value in the cache via
+# batinverse function.
+
+# This function assumes that the matrix is always invertible.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    bat<- x$barinverse()
+    if(!is.null(bat)) {
+        message("getting cached data.")
+        return(bat)
+    }
+    data <- x$bar()
+    bat <- solve(data)
+    x$laminverse(bat)
+    bat
 }
